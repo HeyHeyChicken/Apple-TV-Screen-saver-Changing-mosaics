@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { interval } from 'rxjs';
 
 class Image{
   //#region Attributes
@@ -48,6 +49,9 @@ export class AppComponent implements OnInit{
   private _cssImageRemoveAnimationDuration: number = 400;
 
   private _maxImageId: number = 14;
+
+  private _interval?: any;
+  protected target?: Element;
 
   private get _imagesIDs(): number[]{
     const IDs: number[] = [];
@@ -107,13 +111,28 @@ export class AppComponent implements OnInit{
             complete: function() {
               nbFinished++;
               if(IMAGES.length == nbFinished){
-                SELF.loop();
+                SELF.clickOnPhoto();
               }
             }
           });
         }, AppComponent.random(0, 100));
       }
     });
+  }
+
+  protected clickOnPhoto(event?: MouseEvent): void{
+    if(!this.target){
+      if(event){
+        if(event.target){
+          this.target = event.target as Element;
+          this.loop();
+        }
+      }
+      clearInterval(this._interval);
+      this._interval = setInterval(() => {
+        this.loop();
+      }, 5000);
+    }
   }
   
   public static random(min: number, max: number): number {
@@ -132,32 +151,73 @@ export class AppComponent implements OnInit{
   }
 
   private loop(): void{
-    setTimeout(() => {
-      const TARGETS = document.querySelectorAll(".row > .image > div:not(.removed)");
+    const SELF = this;
+    const CLASS: string = "removed";
+    const ELEMENTS: Element[] = [];
+    if(!this.target){
+      const ROWS: Element[] = Array.from(document.querySelectorAll(".row"));
+      const ROW: Element = ROWS[AppComponent.random(0, ROWS.length - 1)];
+      const TARGETS: NodeListOf<Element> = ROW.querySelectorAll(".image > div:not(." + CLASS + ")");
+      const INDEX = AppComponent.random(0, TARGETS.length - 1);
+      ELEMENTS.push(TARGETS[INDEX]);
+      // Double
+      if(parseInt(ELEMENTS[0].getAttribute("width")!) == 1){
+        if(AppComponent.random(1, 4) == 1){
+          if(INDEX > 0 && Math.random() >= 0.5){
+            if(parseInt(TARGETS[INDEX - 1].getAttribute("width")!) == 1){
+              ELEMENTS.push(TARGETS[INDEX - 1]);
+            }
+          }
+          else if(INDEX + 1 < this.maxImagesPerRow - 1){
+            if(parseInt(TARGETS[INDEX + 1].getAttribute("width")!) == 1){
+              ELEMENTS.push(TARGETS[INDEX + 1]);
+            }
+          }
+          if(ELEMENTS.length == 2){
+            ELEMENTS[1].className = ELEMENTS[0].className;
+          }
+        }
+      }
+    }
+    else{
+      ELEMENTS.push(this.target);
+    }
 
-      const TARGET = TARGETS[AppComponent.random(0, TARGETS.length - 1)];
-      TARGET.classList.add("removed");
-      const IMAGE_ID: number = parseInt(TARGET.getAttribute("image-id")!);
-      const IMAGE_WIDTH: number = parseInt(TARGET.getAttribute("width")!);
+    const FROM_THE_RIGHT: boolean = Math.random() >= 0.5;
+    ELEMENTS.forEach(element => {
+      element.classList.add(CLASS);
+    });
+    const IMAGES_IDS: number[] = ELEMENTS.map(x => parseInt(x.getAttribute("image-id")!));
+    const IMAGE_WIDTH: number = ELEMENTS.map(x => parseInt(x.getAttribute("width")!)).reduce((partialSum, element) => partialSum + element, 0);
 
-      const ROW = TARGET.closest(".row");
+    const ROW = ELEMENTS[0].closest(".row");
+    if(ROW){
       const Y: number = parseInt(ROW!.getAttribute("y")!);
 
       setTimeout(() => {
-        const FROM_THE_RIGHT: boolean = Math.random() >= 0.5;
-        const INDEX = this.rows[Y].images.map(x => x.id).indexOf(IMAGE_ID);
+        const INDEXES: number[] = [];
+        IMAGES_IDS.forEach(id => {
+          INDEXES.push(this.rows[Y].images.map(x => x.id).indexOf(id));
+        });
+        const INDEX = FROM_THE_RIGHT ? Math.min(... INDEXES) : Math.max(... INDEXES);
         const FRIENDS = FROM_THE_RIGHT ? this.rows[Y].images.slice(INDEX + 1) : this.rows[Y].images.slice(0, INDEX);
 
-        this.rows[Y].images = this.rows[Y].images.filter(x => x.id != IMAGE_ID);
+        this.rows[Y].images = this.rows[Y].images.filter(x => !IMAGES_IDS.includes(x.id));
         
         const NEW_IMAGES: Image[] = [];
-        for(let i = 0; i < IMAGE_WIDTH; i++){
+        let width: number = this.maxImagesPerRow - IMAGE_WIDTH;
+        while(width < this.maxImagesPerRow){
           const NEW_IMAGE: Image = new Image(this.getNewPhotoRandomID(), Y);
-          NEW_IMAGE.left = FROM_THE_RIGHT ? (this.maxImagesPerRow * 2 + i) : (this.maxImagesPerRow - 1 - i);
+          const WIDTH: number = ELEMENTS.length > 1 ? 2 : this.maxImagesPerRow - width > 1 ? AppComponent.random(1, 4) == 1 ? 2 : 1 : 1;
+          NEW_IMAGE.width = WIDTH;
+          width += WIDTH;
+
           NEW_IMAGES.push(NEW_IMAGE);
           FROM_THE_RIGHT ? this.rows[Y].images.push(NEW_IMAGE) : this.rows[Y].images.unshift(NEW_IMAGE);
         }
-
+        for(let i = 0; i < NEW_IMAGES.length; i++){
+          NEW_IMAGES[i].left = (FROM_THE_RIGHT ? (this.maxImagesPerRow * 2 + i) : (this.maxImagesPerRow - NEW_IMAGES[i].width - i));
+        }
 
         const DOMS = FRIENDS.map(x => x.dom);
         for(let i = 0; i < DOMS.length; i++){
@@ -170,7 +230,12 @@ export class AppComponent implements OnInit{
               anime({
                 targets: DOMS[i],
                 translateX: OLD_TRANSLATE_X + (document.body.clientWidth / this.maxImagesPerRow * (FROM_THE_RIGHT ? -1 : 1)) * IMAGE_WIDTH,
-                easing: AppComponent.easing
+                easing: AppComponent.easing,
+                complete: function() {
+                  if(i == DOMS.length - 1){
+                    SELF.target = undefined;
+                  }
+                }
               });
             }, i * 50);
           }
@@ -186,9 +251,11 @@ export class AppComponent implements OnInit{
         }, 50 * FRIENDS.length);
         
       }, this._cssImageRemoveAnimationDuration);
-
+    }
+    else{
+      this.target = undefined;
       this.loop();
-    }, 5000);
+    }
   }
 
   private getNewPhotoRandomID(): number {

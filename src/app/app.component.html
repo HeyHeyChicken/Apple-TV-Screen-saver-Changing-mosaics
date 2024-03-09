@@ -4,12 +4,14 @@
     [attr.width]="image.width"
     [attr.image-id]="image.id"
     class="image"
+    [class.cursor]="target"
     [ngStyle]="{'left': leftToPx(image.left) + 'px'}">
     <div
       class="{{ image.x }} {{ image.y }}"
       [attr.width]="image.width"
       [attr.image-id]="image.id"
       [ngStyle]="{'background-image': 'url(/assets/images/pictures/' + image.id + '.jpg)'}"
+      (click)="clickOnPhoto($event)"
     ></div>
   </div>
 </div>

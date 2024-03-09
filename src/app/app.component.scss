@@ -24,9 +24,14 @@ $margin: 12px;
         position: absolute;
         width: calc(100% / 5);
         top: 0;
+        cursor: pointer;
 
         &[width="2"]{
             width: calc(100% / 5 * 2);
+        }
+
+        &.cursor{
+            cursor: not-allowed;
         }
 
         > div{
