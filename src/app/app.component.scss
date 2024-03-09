@@ -12,6 +12,7 @@ $margin: 12px;
     display: flex;
     flex-direction: row;
     transform: translateX(-100%);
+    position: relative;
 
     > .image{
         width: 100%;
@@ -19,12 +20,13 @@ $margin: 12px;
         border: calc(#{$margin} / 2) solid black;
         box-sizing: border-box;
         background-color: black;
-        flex: 1;
-        position: relative;
         overflow: hidden;
+        position: absolute;
+        width: calc(100% / 5);
+        top: 0;
 
-        &[size="2"]{
-            flex: 2 calc(#{$margin} * 2);
+        &[width="2"]{
+            width: calc(100% / 5 * 2);
         }
 
         > div{
@@ -33,7 +35,7 @@ $margin: 12px;
             width: 100%;
             background-size: cover;
             background-position: center center;
-            transition: all 0.4s linear;
+            transition: width 0.4s linear, height 0.4s linear;
 
             &.top{
                 top: 0;

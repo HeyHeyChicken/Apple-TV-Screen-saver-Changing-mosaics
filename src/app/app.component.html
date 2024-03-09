@@ -1,5 +1,15 @@
-<div *ngFor="let row of rows" class="row">
-  <div *ngFor="let image of row.images" [attr.size]="image.size" class="image">
-    <div class="{{ image.x }} {{ image.y }}" [ngStyle]="{'background-image': 'url(/assets/images/pictures/' + image.id + '.jpg)'}"></div>
+<div *ngFor="let row of rows; index as y" class="row" [attr.y]="y">
+  <div
+    *ngFor="let image of row.images"
+    [attr.width]="image.width"
+    [attr.image-id]="image.id"
+    class="image"
+    [ngStyle]="{'left': leftToPx(image.left) + 'px'}">
+    <div
+      class="{{ image.x }} {{ image.y }}"
+      [attr.width]="image.width"
+      [attr.image-id]="image.id"
+      [ngStyle]="{'background-image': 'url(/assets/images/pictures/' + image.id + '.jpg)'}"
+    ></div>
   </div>
 </div>
