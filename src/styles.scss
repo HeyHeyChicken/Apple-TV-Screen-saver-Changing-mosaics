@@ -1,0 +1,14 @@
+$margin: 12px;
+
+html{
+    height: 100vh;
+
+    > body{
+        height: 100%;
+        margin: 0;
+        border: calc(#{$margin} / 2) solid black;
+        box-sizing: border-box;
+        overflow: hidden;
+        background-color: black;
+    }
+}

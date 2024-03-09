@@ -1,0 +1,11 @@
+html {
+  height: 100vh;
+}
+html > body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  border: calc(12px / 2) solid black;
+  box-sizing: border-box;
+}/*# sourceMappingURL=styles.css.map */

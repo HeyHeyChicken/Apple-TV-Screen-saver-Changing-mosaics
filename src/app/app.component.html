@@ -1,0 +1,5 @@
+<div *ngFor="let row of rows" class="row">
+  <div *ngFor="let image of row.images" [attr.size]="image.size" class="image">
+    <div class="{{ image.x }} {{ image.y }}" [ngStyle]="{'background-image': 'url(/assets/images/pictures/' + image.id + '.jpg)'}"></div>
+  </div>
+</div>

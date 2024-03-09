@@ -1,0 +1,75 @@
+$margin: 12px;
+
+:host{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.row{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    transform: translateX(-100%);
+
+    > .image{
+        width: 100%;
+        height: 100%;
+        border: calc(#{$margin} / 2) solid black;
+        box-sizing: border-box;
+        background-color: black;
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+
+        &[size="2"]{
+            flex: 2 calc(#{$margin} * 2);
+        }
+
+        > div{
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            background-size: cover;
+            background-position: center center;
+            transition: all 0.4s linear;
+
+            &.top{
+                top: 0;
+            }
+
+            &.ycenter:not(.xcenter){
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            &.bottom{
+                bottom: 0;
+            }
+            
+            &.left{
+                left: 0;
+            }
+
+            &.xcenter:not(.ycenter){
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            &.right{
+                right: 0;
+            }
+
+            &.ycenter.xcenter{
+                top: 0;
+                left: 0;
+            }
+
+            &.removed{
+                height: 0;
+                width: 0;
+            }
+        }
+    }
+}
