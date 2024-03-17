@@ -1,27 +1,49 @@
-# AppleTvScreenSaverChangingMosaics
+<div align="center">
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.8.
+<img src="https://raw.githubusercontent.com/HeyHeyChicken/Apple-TV-Screen-saver-Changing-mosaics/main/.github/demo.gif" alt="Apple TV - Screen saver - Changing mosaics" width="300">
 
-## Development server
+**Apple TV - Screen saver - Changing mosaics** is an Angular reproduction of an Apple TV's screen saver.<br>
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+</div>
 
-## Code scaffolding
+## 👋 Introduction
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+**Apple TV - Screen saver - Changing mosaics** is an Angular reproduction of an Apple TV's sleep screen.<br>
+This project makes no sense, and only reflects my love for this screen saver that I use at home. 🤣
 
-## Build
+## 🔧 Prerequisites
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+[<img src="https://raw.githubusercontent.com/HeyHeyChicken/Angular-Wizz/main/.github/nodeJSLogo.png" width="18" /> Node.js](//nodejs.org/)<br/>
+[<img src="https://raw.githubusercontent.com/HeyHeyChicken/Angular-Wizz/main/.github/npmLogo.png" width="18" /> npm](//npmjs.com/)<br/>
+[<img src="https://raw.githubusercontent.com/HeyHeyChicken/Angular-Wizz/main/.github/angularLogo.png" width="18" /> Angular](//angular.io/)<br/>
 
-## Running unit tests
+## ⬇️ Installation
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+1. Clone it directly from GitHub.
 
-## Running end-to-end tests
+```
+git clone https://github.com/HeyHeyChicken/Apple-TV-Screen-saver-Changing-mosaics.git
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+2. Install packages
 
-## Further help
+```
+cd Apple-TV-Screen-saver-Changing-mosaics
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```
+npm install
+```
+
+## 🚀 Usage
+
+1. Just start the Angular project
+
+```
+npx ng serve
+```
+
+<br>
+<br>
+
+Created by [Antoine Duval (HeyHeyChicken)](//antoine.cuffel.fr) with ❤ and ☕ (chocolate) in [Mesnil-Panneville](//en.wikipedia.org/wiki/Mesnil-Panneville).
