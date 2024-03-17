@@ -34,7 +34,7 @@ export class RowImage{
       public width: number = 1,
       public x: string = RowImage.X[AppComponent.random(0, RowImage.X.length - 1)],
       public y: string = RowImage.Y[AppComponent.random(0, RowImage.Y.length - 1)],
-      public animated: boolean = true, //AppComponent.random(0, 10) == 1
+      public animated: boolean = AppComponent.random(1, 3) == 1
     ){
       const img = new Image();
       img.onload = () => { this._meta = img; };
