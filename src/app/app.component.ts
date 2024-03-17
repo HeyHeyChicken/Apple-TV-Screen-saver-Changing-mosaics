@@ -1,34 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { interval } from 'rxjs';
-
-class Image{
-  //#region Attributes
-
-  static X: string[] = ["left", "xcenter", "right"];
-  static Y: string[] = ["top", "ycenter", "bottom"];
-
-  public get dom(): Element | null{
-    const SELECTOR: string = ".row > .image[width='" + this.width + "'][image-id='" + this.id + "']";
-    return document.querySelector(SELECTOR);
-  }
-
-  //#endregion
-
-  constructor(
-    public id: number,
-    public rowIndex: number,
-    public left: number = 0,
-    public width: number = 1,
-    public x: string = Image.X[AppComponent.random(0, Image.X.length - 1)],
-    public y: string = Image.Y[AppComponent.random(0, Image.Y.length - 1)]
-  ){}
-}
-
-class Row{
-  constructor(public images: Image[]){}
-}
+import { RowImage } from './utils/image';
+import { Row } from './utils/row';
 
 @Component({
   selector: 'app-root',
@@ -48,7 +22,7 @@ export class AppComponent implements OnInit{
 
   private _cssImageRemoveAnimationDuration: number = 400;
 
-  private _maxImageId: number = 14;
+  private _maxImageId: number = 18;
 
   private _interval?: any;
   protected target?: Element;
@@ -57,7 +31,7 @@ export class AppComponent implements OnInit{
     const IDs: number[] = [];
 
     this.rows.forEach((row: Row) => {
-      row.images.forEach((image: Image) => {
+      row.images.forEach((image: RowImage) => {
         IDs.push(image.id);
       });
     });
@@ -73,7 +47,7 @@ export class AppComponent implements OnInit{
 
       const NB_IMAGES_IN_ROW: number = AppComponent.random(1, 4) == 1 ? 4 : 5;
       for(let i = 0; i < NB_IMAGES_IN_ROW; i++){
-        const IMAGE: Image = new Image(this.getNewPhotoRandomID(), i);
+        const IMAGE: RowImage = new RowImage(this.getNewPhotoRandomID(), i);
         this.rows[this.rows.length - 1].images.push(IMAGE);
       }
       // Set width
@@ -87,7 +61,7 @@ export class AppComponent implements OnInit{
       // Set left
       let left: number = 0;
       for(let i = 0; i < this.rows[this.rows.length - 1].images.length; i++){
-        const IMAGE: Image = this.rows[this.rows.length - 1].images[i];
+        const IMAGE: RowImage = this.rows[this.rows.length - 1].images[i];
         IMAGE.left = left;
         left += IMAGE.width;
       }
@@ -110,8 +84,9 @@ export class AppComponent implements OnInit{
             easing: AppComponent.easing,
             complete: function() {
               nbFinished++;
+              IMAGES[i].classList.add('animated');
               if(IMAGES.length == nbFinished){
-                SELF.clickOnPhoto();
+                  SELF.clickOnPhoto();
               }
             }
           });
@@ -204,10 +179,10 @@ export class AppComponent implements OnInit{
 
         this.rows[Y].images = this.rows[Y].images.filter(x => !IMAGES_IDS.includes(x.id));
         
-        const NEW_IMAGES: Image[] = [];
+        const NEW_IMAGES: RowImage[] = [];
         let width: number = this.maxImagesPerRow - IMAGE_WIDTH;
         while(width < this.maxImagesPerRow){
-          const NEW_IMAGE: Image = new Image(this.getNewPhotoRandomID(), Y);
+          const NEW_IMAGE: RowImage = new RowImage(this.getNewPhotoRandomID(), Y);
           const WIDTH: number = ELEMENTS.length > 1 ? 2 : this.maxImagesPerRow - width > 1 ? AppComponent.random(1, 4) == 1 ? 2 : 1 : 1;
           NEW_IMAGE.width = WIDTH;
           width += WIDTH;
@@ -242,11 +217,16 @@ export class AppComponent implements OnInit{
         }
 
         setTimeout(() => {
-          //@ts-ignore
-          anime({
-            targets: NEW_IMAGES.map(x => x.dom),
-            translateX: (document.body.clientWidth / this.maxImagesPerRow * (FROM_THE_RIGHT ? -1 : 1)) * IMAGE_WIDTH,
-            easing: AppComponent.easing
+          NEW_IMAGES.map(x => x.dom).forEach(element => {
+            //@ts-ignore
+            anime({
+              targets: element,
+              translateX: (document.body.clientWidth / this.maxImagesPerRow * (FROM_THE_RIGHT ? -1 : 1)) * IMAGE_WIDTH,
+              easing: AppComponent.easing,
+              complete: function(event: any) {
+                element?.classList.add('animated');
+              }
+            });
           });
         }, 50 * FRIENDS.length);
         

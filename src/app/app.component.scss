@@ -26,10 +26,6 @@ $margin: 12px;
         top: 0;
         cursor: pointer;
 
-        &[width="2"]{
-            width: calc(100% / 5 * 2);
-        }
-
         &.cursor{
             cursor: not-allowed;
         }
@@ -78,5 +74,66 @@ $margin: 12px;
                 width: 0;
             }
         }
+        
+
+        &[width="2"]{
+            width: calc(100% / 5 * 2);
+
+            &.animated{
+                > div{
+                    &.animated{                        
+                        &.horizontal{
+                            animation: horizontalSlide 5s forwards;
+                        }
+                    }
+                }
+            }
+
+            > div{
+                &.animated{
+                    &.horizontal{
+                        background-position: 0% center;
+                    }
+                }
+            }
+        }
+
+        &[width="1"]{
+            &.animated{
+                > div{
+                    &.animated{
+                        &.vertical{
+                            animation: verticalSlide 5s forwards;
+                        }
+                    }
+                }
+            }
+
+            > div{
+                &.animated{
+                    &.vertical{
+                        background-position: center 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes horizontalSlide {
+    from {
+        background-position: 0% center;
+    }
+    to {
+        background-position: 100% center;
+    }
+}
+
+@keyframes verticalSlide {
+    from {
+        background-position: center 100%;
+    }
+    to {
+        background-position: center 0%;
     }
 }

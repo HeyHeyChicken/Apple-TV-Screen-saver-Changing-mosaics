@@ -10,8 +10,11 @@
       class="{{ image.x }} {{ image.y }}"
       [attr.width]="image.width"
       [attr.image-id]="image.id"
+      [class.animated]="image.animated"
+      [class.vertical]="image.vertical"
+      [class.horizontal]="!image.vertical"
       [ngStyle]="{'background-image': 'url(/assets/images/pictures/' + image.id + '.jpg)'}"
-      (click)="clickOnPhoto($event)"
-    ></div>
+      (click)="clickOnPhoto($event)">
+    </div>
   </div>
 </div>
