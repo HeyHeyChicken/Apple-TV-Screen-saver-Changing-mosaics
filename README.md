@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/HeyHeyChicken/Apple-TV-Screen-saver-Changing-mosaics/main/src/assets/images/apple-black.png" alt="Apple" width="200">
+<img src="https://raw.githubusercontent.com/HeyHeyChicken/Apple-TV-Screen-saver-Changing-mosaics/main/src/assets/images/apple-black.png" alt="Apple" width="100">
 <br/>
 <img src="https://raw.githubusercontent.com/HeyHeyChicken/Apple-TV-Screen-saver-Changing-mosaics/main/.github/demo.gif" alt="Apple TV - Screen saver - Changing mosaics" width="600">
 
