@@ -1,6 +1,7 @@
 <div align="center">
 
 <img src="https://raw.githubusercontent.com/HeyHeyChicken/Apple-TV-Screen-saver-Changing-mosaics/main/src/assets/images/apple-black.png" alt="Apple" width="200">
+<br/>
 <img src="https://raw.githubusercontent.com/HeyHeyChicken/Apple-TV-Screen-saver-Changing-mosaics/main/.github/demo.gif" alt="Apple TV - Screen saver - Changing mosaics" width="600">
 
 **Apple TV - Screen saver - Changing mosaics** is an Angular reproduction of an Apple TV's screen saver.<br>
